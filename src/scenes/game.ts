@@ -2,6 +2,8 @@ import Phaser from 'phaser'
 
 export default class Game extends Phaser.Scene
 {
+    private cursors!: Phaser.Types.Input.Keyboard.CursorKeys
+    private faune!: Phaser.GameObjects.Sprite
 	constructor()
 	{
 		super('game')
@@ -9,6 +11,7 @@ export default class Game extends Phaser.Scene
 
 	preload()
     {
+        this.cursors = this.input.keyboard.createCursorKeys()
     }
 
     create()
@@ -28,11 +31,21 @@ export default class Game extends Phaser.Scene
     //     faceColor: new Phaser.Display.Color(40, 39, 37, 255)
     //    })
 
-    const faune = this.add.sprite(128, 128, 'faune', 'walk-down-3.png')
+    this.faune = this.add.sprite(128, 128, 'faune', 'walk-down-3.png')
 
     this.anims.create({
         key: 'faune-idle-down',
         frames: [{ key: 'faune', frame: 'walk-down-3.png'}]
+    })
+
+    this.anims.create({
+        key: 'faune-idle-up',
+        frames: [{ key: 'faune', frame: 'walk-up-3.png'}]
+    })
+
+    this.anims.create({
+        key: 'faune-idle-side',
+        frames: [{ key: 'faune', frame: 'walk-side-3.png'}]
     })
     
     this.anims.create({ 
@@ -60,6 +73,12 @@ export default class Game extends Phaser.Scene
     })
 
 
-    faune.anims.play('faune-run-down')
+    this.faune.anims.play('faune-run-down')
+    }
+
+    update(t: number, dt: number){
+        if (!this.cursors || !this.faune){
+            return
+        }
     }
 }
