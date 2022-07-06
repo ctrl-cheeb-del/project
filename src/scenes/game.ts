@@ -37,8 +37,28 @@ export default class Game extends Phaser.Scene
     
     this.anims.create({ 
         key: 'faune-run-down',
-        frames: this.anims.generateFrameNames('faune', {start: 1, end: 8, prefix: 'run-down-', suffix: '.png'})
+        frames: this.anims.generateFrameNames('faune', {start: 1, end: 8, prefix: 'run-down-', suffix: '.png'}),
+        repeat: -1,
+        frameRate: 15
+
     })
+
+    this.anims.create({ 
+        key: 'faune-run-up',
+        frames: this.anims.generateFrameNames('faune', {start: 1, end: 8, prefix: 'run-up-', suffix: '.png'}),
+        repeat: -1,
+        frameRate: 15
+
+    })
+
+    this.anims.create({ 
+        key: 'faune-run-side',
+        frames: this.anims.generateFrameNames('faune', {start: 1, end: 8, prefix: 'run-side-', suffix: '.png'}),
+        repeat: -1,
+        frameRate: 15
+
+    })
+
 
     faune.anims.play('faune-run-down')
     }
