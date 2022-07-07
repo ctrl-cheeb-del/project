@@ -23,18 +23,30 @@ export default class Game extends Phaser.Scene
        const Island1 = map.createLayer('Island1', tileset)
        const Island2 = map.createLayer('Island2', tileset)
        const Rocks = map.createLayer('Rocks', tileset)
+       const Decor = map.createLayer('Decor', tileset)
+       const Bushes = map.createLayer('Bushes', tileset)
+       const House_under = map.createLayer('House under', tileset)
+       const Housedecor = map.createLayer('House decor',tileset)
+       const House = map.createLayer('House', tileset)
+       const Houseontop = map.createLayer('House Ontop', tileset)
 
+
+       House.setCollisionByProperty({ collides: true})
+       Housedecor.setCollisionByProperty({ collides: true })
+       Houseontop.setCollisionByProperty({ collides : true })
+       Bushes.setCollisionByProperty({collides: true})
        Rocks.setCollisionByProperty({ collides: true })
        Island1.setCollisionByProperty({ collides: true })
        water.setCollisionByProperty({ collides: true})
        Island2.setCollisionByProperty({ collides: true})
+       Bushes.setCollisionByProperty({ collides: true })
 
-    //    const debugGraphics = this.add.graphics().setAlpha(0.7)
-    //    Island1.renderDebug(debugGraphics, {
-    //     tileColor: null,
-    //     collidingTileColor: new Phaser.Display.Color(243, 234, 48, 255),
-    //     faceColor: new Phaser.Display.Color(40, 39, 37, 255)
-    //    })
+       const debugGraphics = this.add.graphics().setAlpha(0.7)
+       House.renderDebug(debugGraphics, {
+        tileColor: null,
+        collidingTileColor: new Phaser.Display.Color(243, 234, 48, 255),
+        faceColor: new Phaser.Display.Color(40, 39, 37, 255)
+       })
 
     this.faune = this.physics.add.sprite(480, 235, 'faune', 'walk-down-3.png')
     this.faune.body.setSize(this.faune.width * 0.5, this.faune.height * 0.8)
@@ -85,9 +97,14 @@ export default class Game extends Phaser.Scene
     this.physics.add.collider(this.faune, Rocks)
     this.physics.add.collider(this.faune, Island2)
     this.physics.add.collider(this.faune, water)
+    this.physics.add.collider(this.faune, House)
+    this.physics.add.collider(this.faune, Housedecor)
+    this.physics.add.collider(this.faune, Houseontop)
+
+
 
     this.cameras.main.startFollow(this.faune, true,)
-    this.cameras.main.setBounds(-436, -200.5, 1832, 887, true)
+    this.cameras.main.setBounds(-436, -200.5, 1833, 887, true)
     // this.cameras.main.centerOn(innerWidth, innerHeight)
 
     }
@@ -115,7 +132,6 @@ export default class Game extends Phaser.Scene
 
         }
         else if (this.cursors.up?.isDown) {
-            
             this.faune.anims.play('faune-run-up', true)
             this.faune.setVelocity(0, -speed)
         }
