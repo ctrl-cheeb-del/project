@@ -87,6 +87,7 @@ export default class Game extends Phaser.Scene
     this.physics.add.collider(this.faune, water)
 
     this.cameras.main.startFollow(this.faune, true,)
+    this.cameras.main.setBounds(-436, -200.5, 1832, 887, true)
     // this.cameras.main.centerOn(innerWidth, innerHeight)
 
     }
