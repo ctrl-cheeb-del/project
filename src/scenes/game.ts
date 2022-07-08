@@ -20,6 +20,8 @@ export default class Game extends Phaser.Scene
        const tileset = map.addTilesetImage('Serene_Village_16x16', 'tiles', 16, 16, 1, 2)
 
        const water = map.createLayer('Water', tileset)
+       const WaterWalk = map.createLayer('Waterwalk', tileset)
+       const IslandUnder = map.createLayer('Islandunder', tileset)
        const Island1 = map.createLayer('Island1', tileset)
        const Island2 = map.createLayer('Island2', tileset)
        const Rocks = map.createLayer('Rocks', tileset)
@@ -29,7 +31,10 @@ export default class Game extends Phaser.Scene
        const Housedecor = map.createLayer('House decor',tileset)
        const House = map.createLayer('House', tileset)
        const Houseontop = map.createLayer('House Ontop', tileset)
-
+       const Tree1 = map.createLayer('Tree1', tileset)
+       const Tree2 = map.createLayer('Tree2', tileset)
+       const Tree3 = map.createLayer('Tree3', tileset)
+       const Tree4 = map.createLayer('Tree4', tileset)
 
        House.setCollisionByProperty({ collides: true})
        Housedecor.setCollisionByProperty({ collides: true })
@@ -40,16 +45,21 @@ export default class Game extends Phaser.Scene
        water.setCollisionByProperty({ collides: true})
        Island2.setCollisionByProperty({ collides: true})
        Bushes.setCollisionByProperty({ collides: true })
+       Tree1.setCollisionByProperty({ collides: true })
+       Tree2.setCollisionByProperty({ collides: true })
+       Tree3.setCollisionByProperty({ collides: true })
+       Tree4.setCollisionByProperty({ collides: true })
+
 
        const debugGraphics = this.add.graphics().setAlpha(0.7)
-       House.renderDebug(debugGraphics, {
+       water.renderDebug(debugGraphics, {
         tileColor: null,
         collidingTileColor: new Phaser.Display.Color(243, 234, 48, 255),
         faceColor: new Phaser.Display.Color(40, 39, 37, 255)
        })
 
     this.faune = this.physics.add.sprite(480, 235, 'faune', 'walk-down-3.png')
-    this.faune.body.setSize(this.faune.width * 0.5, this.faune.height * 0.8)
+    this.faune.body.setSize(this.faune.width * 0.5, this.faune.height * 0.7)
 
     this.anims.create({
         key: 'faune-idle-down',
@@ -99,9 +109,11 @@ export default class Game extends Phaser.Scene
     this.physics.add.collider(this.faune, water)
     this.physics.add.collider(this.faune, House)
     this.physics.add.collider(this.faune, Housedecor)
+    this.physics.add.collider(this.faune, Tree1)
+    this.physics.add.collider(this.faune, Tree2)
+    this.physics.add.collider(this.faune, Tree3)
+    this.physics.add.collider(this.faune, Tree4)
     this.physics.add.collider(this.faune, Houseontop)
-
-
 
     this.cameras.main.startFollow(this.faune, true,)
     this.cameras.main.setBounds(-436, -200.5, 1833, 887, true)
