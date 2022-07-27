@@ -52,7 +52,7 @@ export default class Game extends Phaser.Scene
 
 
        const debugGraphics = this.add.graphics().setAlpha(0.7)
-       water.renderDebug(debugGraphics, {
+       Island1.renderDebug(debugGraphics, {
         tileColor: null,
         collidingTileColor: new Phaser.Display.Color(243, 234, 48, 255),
         faceColor: new Phaser.Display.Color(40, 39, 37, 255)
