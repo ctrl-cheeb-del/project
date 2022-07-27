@@ -120,6 +120,16 @@ export default class Game extends Phaser.Scene
     // this.cameras.main.centerOn(innerWidth, innerHeight)
 
     const lizard = this.add.sprite(500, 300, 'lizard', 'lizard_m_idle_anim_f0.png')
+
+    this.anims.create({
+        key: 'lizard-idle',
+        frames: this.anims.generateFrameNames('lizard', {start: 0, end: 3, prefix: 'lizard_m_idle_anim_f', suffix: '.png' }),
+        repeat: -1,
+        frameRate: 10
+    })
+    lizard.anims.play('lizard-idle')
+
+
     }
     
 
