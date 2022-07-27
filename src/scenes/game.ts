@@ -1,4 +1,6 @@
 import Phaser from 'phaser'
+import { createLizardAnims } from '../anims/EnemyAnims'
+import { createCharacterAnims } from '../anims/CharacterAnims'
 
 export default class Game extends Phaser.Scene
 {
@@ -16,6 +18,9 @@ export default class Game extends Phaser.Scene
 
     create()
     {
+        createCharacterAnims(this.anims)
+        createLizardAnims(this.anims)
+
        const map = this.make.tilemap({ key: 'mainmap' })
        const tileset = map.addTilesetImage('Serene_Village_16x16', 'tiles', 16, 16, 1, 2)
 
@@ -61,47 +66,6 @@ export default class Game extends Phaser.Scene
     this.faune = this.physics.add.sprite(480, 235, 'faune', 'walk-down-3.png')
     this.faune.body.setSize(this.faune.width * 0.5, this.faune.height * 0.7)
 
-    this.anims.create({
-        key: 'faune-idle-down',
-        frames: [{ key: 'faune', frame: 'walk-down-3.png'}]
-    })
-
-    this.anims.create({
-        key: 'faune-idle-up',
-        frames: [{ key: 'faune', frame: 'walk-up-3.png'}]
-    })
-
-    this.anims.create({
-        key: 'faune-idle-side',
-        frames: [{ key: 'faune', frame: 'walk-side-3.png'}]
-    })
-    
-
-    this.anims.create({ 
-        key: 'faune-run-down',
-        frames: this.anims.generateFrameNames('faune', {start: 1, end: 8, prefix: 'run-down-', suffix: '.png'}),
-        repeat: -1,
-        frameRate: 15
-
-    })
-
-    this.anims.create({ 
-        key: 'faune-run-up',
-        frames: this.anims.generateFrameNames('faune', {start: 1, end: 8, prefix: 'run-up-', suffix: '.png'}),
-        repeat: -1,
-        frameRate: 15
-
-    })
-
-    this.anims.create({ 
-        key: 'faune-run-side',
-        frames: this.anims.generateFrameNames('faune', {start: 1, end: 8, prefix: 'run-side-', suffix: '.png'}),
-        repeat: -1,
-        frameRate: 15
-
-    })
-
-
     this.faune.anims.play('faune-idle-down')
     this.physics.add.collider(this.faune, Island1)
     this.physics.add.collider(this.faune, Rocks)
@@ -119,15 +83,9 @@ export default class Game extends Phaser.Scene
     this.cameras.main.setBounds(-436, -200.5, 1833, 887, true)
     // this.cameras.main.centerOn(innerWidth, innerHeight)
 
-    const lizard = this.add.sprite(500, 300, 'lizard', 'lizard_m_idle_anim_f0.png')
+    const lizard = this.physics.add.sprite(500, 300, 'lizard', 'lizard_m_idle_anim_f0.png')
 
-    this.anims.create({
-        key: 'lizard-idle',
-        frames: this.anims.generateFrameNames('lizard', {start: 0, end: 3, prefix: 'lizard_m_idle_anim_f', suffix: '.png' }),
-        repeat: -1,
-        frameRate: 10
-    })
-    lizard.anims.play('lizard-idle')
+    lizard.anims.play('lizard-run')
 
 
     }
