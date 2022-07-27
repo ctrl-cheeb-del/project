@@ -119,6 +119,7 @@ export default class Game extends Phaser.Scene
     this.cameras.main.setBounds(-436, -200.5, 1833, 887, true)
     // this.cameras.main.centerOn(innerWidth, innerHeight)
 
+    const lizard = this.add.sprite(500, 300, 'lizard', 'lizard_m_idle_anim_f0.png')
     }
     
 
