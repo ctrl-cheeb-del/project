@@ -1,6 +1,7 @@
 import Phaser from 'phaser'
 import { createLizardAnims } from '../anims/EnemyAnims'
 import { createCharacterAnims } from '../anims/CharacterAnims'
+import Lizard from '../enemies/Lizard'
 
 export default class Game extends Phaser.Scene
 {
@@ -79,14 +80,32 @@ export default class Game extends Phaser.Scene
     this.physics.add.collider(this.faune, Tree4)
     this.physics.add.collider(this.faune, Houseontop)
 
+
     this.cameras.main.startFollow(this.faune, true,)
     this.cameras.main.setBounds(-436, -200.5, 1833, 887, true)
     // this.cameras.main.centerOn(innerWidth, innerHeight)
 
-    const lizard = this.physics.add.sprite(500, 300, 'lizard', 'lizard_m_idle_anim_f0.png')
+    const lizards = this.physics.add.group({
+        classType: Lizard
+    })
 
-    lizard.anims.play('lizard-run')
+    lizards.get(500, 300, 'lizard')
+    this.physics.add.collider(lizards, Island1)
+    this.physics.add.collider(lizards, Rocks)
+    this.physics.add.collider(lizards, Island2)
+    this.physics.add.collider(lizards, water)
+    this.physics.add.collider(lizards, House)
+    this.physics.add.collider(lizards, Housedecor)
+    this.physics.add.collider(lizards, Tree1)
+    this.physics.add.collider(lizards, Tree2)
+    this.physics.add.collider(lizards, Tree3)
+    this.physics.add.collider(lizards, Tree4)
+    this.physics.add.collider(lizards, Houseontop)
 
+
+    // const lizard = this.physics.add.sprite(500, 300, 'lizard', 'lizard_m_idle_anim_f0.png')
+
+    // lizard.anims.play('lizard-run')
 
     }
     
