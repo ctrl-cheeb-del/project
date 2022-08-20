@@ -57,12 +57,12 @@ export default class Game extends Phaser.Scene
        Tree4.setCollisionByProperty({ collides: true })
 
 
-       const debugGraphics = this.add.graphics().setAlpha(0.7)
-       Island1.renderDebug(debugGraphics, {
-        tileColor: null,
-        collidingTileColor: new Phaser.Display.Color(243, 234, 48, 255),
-        faceColor: new Phaser.Display.Color(40, 39, 37, 255)
-       })
+    //    const debugGraphics = this.add.graphics().setAlpha(0.7)
+    //    Island1.renderDebug(debugGraphics, {
+    //     tileColor: null,
+    //     collidingTileColor: new Phaser.Display.Color(243, 234, 48, 255),
+    //     faceColor: new Phaser.Display.Color(40, 39, 37, 255)
+    //    })
 
     this.faune = this.physics.add.sprite(480, 235, 'faune', 'walk-down-3.png')
     this.faune.body.setSize(this.faune.width * 0.5, this.faune.height * 0.7)
