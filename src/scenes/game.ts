@@ -105,6 +105,8 @@ export default class Game extends Phaser.Scene
     this.physics.add.collider(lizards, Tree3)
     this.physics.add.collider(lizards, Tree4)
     this.physics.add.collider(lizards, Houseontop)
+    this.physics.add.collider(lizards, this.faune)
+
 
 
     // const lizard = this.physics.add.sprite(500, 300, 'lizard', 'lizard_m_idle_anim_f0.png')
