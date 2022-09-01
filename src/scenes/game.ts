@@ -86,7 +86,11 @@ export default class Game extends Phaser.Scene
     // this.cameras.main.centerOn(innerWidth, innerHeight)
 
     const lizards = this.physics.add.group({
-        classType: Lizard
+        classType: Lizard,
+        createCallback: (go) => {
+            const lizGo = go as Lizard
+            lizGo.body.onCollide = true
+        }
     })
 
     lizards.get(500, 300, 'lizard')
