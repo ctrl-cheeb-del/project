@@ -2,6 +2,7 @@ import Phaser, { Scale } from 'phaser'
 
 import Preloader from './scenes/Preloader'
 import Game from './scenes/game'
+import secondmap from './scenes/secondmap'
 
 const config: Phaser.Types.Core.GameConfig = {
 	type: Phaser.AUTO,
@@ -14,7 +15,7 @@ const config: Phaser.Types.Core.GameConfig = {
 			debug: true
 		}
 	},
-	scene: [Preloader, Game],
+	scene: [Preloader, Game, secondmap],
 	scale: {
 		zoom: 2
 	}
