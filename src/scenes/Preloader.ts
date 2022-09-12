@@ -19,6 +19,6 @@ export default class Preloader extends Phaser.Scene
 
     create()
     {
-        this.scene.start('secondmap')
+        this.scene.start('game')
     }
 }

@@ -1,7 +1,8 @@
-import Phaser from 'phaser'
+import Phaser, { Scene } from 'phaser'
 import { createLizardAnims } from '../anims/EnemyAnims'
 import { createCharacterAnims } from '../anims/CharacterAnims'
 import Lizard from '../enemies/Lizard'
+import secondmap from './secondmap'
 
 export default class Game extends Phaser.Scene
 {
@@ -11,6 +12,7 @@ export default class Game extends Phaser.Scene
 	{
 		super('game')
 	}
+    
 
 	preload()
     {
@@ -19,6 +21,9 @@ export default class Game extends Phaser.Scene
 
     create()
     {
+
+        // this.scene.start('secondmap')
+
         createCharacterAnims(this.anims)
         createLizardAnims(this.anims)
 
@@ -41,6 +46,8 @@ export default class Game extends Phaser.Scene
        const Tree2 = map.createLayer('Tree2', tileset)
        const Tree3 = map.createLayer('Tree3', tileset)
        const Tree4 = map.createLayer('Tree4', tileset)
+       const Next1 = map.createLayer('Next', tileset)
+       
 
        House.setCollisionByProperty({ collides: true})
        Housedecor.setCollisionByProperty({ collides: true })
@@ -55,10 +62,11 @@ export default class Game extends Phaser.Scene
        Tree2.setCollisionByProperty({ collides: true })
        Tree3.setCollisionByProperty({ collides: true })
        Tree4.setCollisionByProperty({ collides: true })
+       Next1.setCollisionByProperty({ collides: true })
 
 
     //    const debugGraphics = this.add.graphics().setAlpha(0.7)
-    //    water.renderDebug(debugGraphics, {
+    //    Next1.renderDebug(debugGraphics, {
     //     tileColor: null,
     //     collidingTileColor: new Phaser.Display.Color(243, 234, 48, 255),
     //     faceColor: new Phaser.Display.Color(40, 39, 37, 255)
@@ -66,6 +74,7 @@ export default class Game extends Phaser.Scene
 
     this.faune = this.physics.add.sprite(480, 235, 'faune', 'walk-down-3.png')
     this.faune.body.setSize(this.faune.width * 0.5, this.faune.height * 0.7)
+    
 
     this.faune.anims.play('faune-idle-down')
     this.physics.add.collider(this.faune, Island1)
@@ -79,6 +88,7 @@ export default class Game extends Phaser.Scene
     this.physics.add.collider(this.faune, Tree3)
     this.physics.add.collider(this.faune, Tree4)
     this.physics.add.collider(this.faune, Houseontop)
+    this.physics.add.collider(this.faune, Next1)
 
 
     this.cameras.main.startFollow(this.faune, true,)
@@ -107,13 +117,40 @@ export default class Game extends Phaser.Scene
     this.physics.add.collider(lizards, Houseontop)
     this.physics.add.collider(lizards, this.faune)
 
-
     // const lizard = this.physics.add.sprite(500, 300, 'lizard', 'lizard_m_idle_anim_f0.png')
     // lizard.anims.play('lizard-run')
 
+    // this.physics.add.overlap(this.faune, Next1) {
+    //     console.log("cool");
+    //     sleep(20000)
+    //     this.scene.stop();
+    //     this.scene.start('secondmap');
+    // }
+
+    // if(this.physics.collide(this.faune, Next1)){
+    //     console.log("cool")
+    //     this.scene.stop();
+    //     this.scene.start('secondmap');
+    // }
+      
+    // this.physics.world.collide(this.faune, Next1, ()=>{
+    //     console.log("cool")
+    //     this.scene.stop(),
+    //     this.scene.start('secondmap');
+    //     });
+    
     }
 
-    update(t: number, dt: number){
+
+
+    update(t: number, dt: number){       
+
+        console.log(this.faune.x, this.faune.y)
+        if (this.faune.y > 450 && this.faune.x < 90){
+            this.scene.stop()
+            this.scene.start('secondmap')
+        }
+
         if (!this.cursors || !this.faune)
         {
             return
@@ -153,4 +190,5 @@ export default class Game extends Phaser.Scene
         }
 
     }
+
 }

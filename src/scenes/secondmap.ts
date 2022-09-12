@@ -25,24 +25,22 @@ export default class secondmap extends Phaser.Scene
        const map = this.make.tilemap({ key: 'map2' })
        const tileset = map.addTilesetImage('Serene_Village_16x16', 'tiles2')
 
-       const water = map.createLayer('Water', tileset)
-       const island1 = map.createLayer('Island 1', tileset)
-       island1.setCollisionByProperty({ collides: true})
-    //    this.physics.add.collider(this.faune, island1)
-       
+       const Island1 = map.createLayer('Island1', tileset)
+       Island1.setCollisionByProperty({ collides: true })
 
-
-       const debugGraphics = this.add.graphics().setAlpha(0.7)
-       island1.renderDebug(debugGraphics, {
-        tileColor: null,
-        collidingTileColor: new Phaser.Display.Color(243, 234, 48, 255),
-        faceColor: new Phaser.Display.Color(40, 39, 37, 255)
-       })
+    //    const debugGraphics = this.add.graphics().setAlpha(0.7)
+    //    water.renderDebug(debugGraphics, {
+    //     tileColor: null,
+    //     collidingTileColor: new Phaser.Display.Color(243, 234, 48, 255),
+    //     faceColor: new Phaser.Display.Color(40, 39, 37, 255)
+    //    })
 
     this.faune = this.physics.add.sprite(480, 235, 'faune', 'walk-down-3.png')
     this.faune.body.setSize(this.faune.width * 0.5, this.faune.height * 0.7)
 
     this.faune.anims.play('faune-idle-down')
+    this.physics.add.collider(this.faune, Island1)
+
     this.cameras.main.startFollow(this.faune, true,)
     this.cameras.main.setBounds(-436, -200.5, 1833, 887, true)
     // this.cameras.main.centerOn(innerWidth, innerHeight)
@@ -56,8 +54,7 @@ export default class secondmap extends Phaser.Scene
     })
 
     lizards.get(500, 300, 'lizard')
-    this.physics.add.collider(lizards, island1)
-
+    this.physics.add.collider(lizards, Island1)
     this.physics.add.collider(lizards, this.faune)
 
 
