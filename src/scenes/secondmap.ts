@@ -35,7 +35,7 @@ export default class secondmap extends Phaser.Scene
     //     faceColor: new Phaser.Display.Color(40, 39, 37, 255)
     //    })
 
-    this.faune = this.physics.add.sprite(480, 235, 'faune', 'walk-down-3.png')
+    this.faune = this.physics.add.sprite(80, 40, 'faune', 'walk-down-3.png')
     this.faune.body.setSize(this.faune.width * 0.5, this.faune.height * 0.7)
 
     this.faune.anims.play('faune-idle-down')
