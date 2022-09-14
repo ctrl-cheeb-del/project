@@ -3,6 +3,11 @@ import { createLizardAnims } from '../anims/EnemyAnims'
 import { createCharacterAnims } from '../anims/CharacterAnims'
 import Lizard from '../enemies/Lizard'
 
+let keyA;
+let keyS;
+let keyD;
+let keyW;
+
 export default class secondmap extends Phaser.Scene
 {
     private cursors!: Phaser.Types.Input.Keyboard.CursorKeys
@@ -41,6 +46,11 @@ export default class secondmap extends Phaser.Scene
     this.faune.anims.play('faune-idle-down')
     this.physics.add.collider(this.faune, Island1)
 
+    keyA = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A);
+    keyS = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S);
+    keyD = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D);
+    keyW = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W);
+
     this.cameras.main.startFollow(this.faune, true,)
     this.cameras.main.setBounds(-436, -200.5, 1833, 887, true)
     // this.cameras.main.centerOn(innerWidth, innerHeight)
@@ -69,14 +79,14 @@ export default class secondmap extends Phaser.Scene
             return
         }
         const speed = 100;
-        if (this.cursors.left?.isDown)
+        if (this.cursors.left?.isDown || keyA.isDown)
         {
             this.faune.anims.play('faune-run-side', true)
             this.faune.setVelocity(-speed, 0)
             this.faune.scaleX = -1
             this.faune.body.offset.x = 24
         }
-        else if (this.cursors.right?.isDown)
+        else if (this.cursors.right?.isDown || keyD.isDown)
         {
             this.faune.anims.play('faune-run-side', true)
             this.faune.setVelocity(speed, 0)
@@ -84,12 +94,12 @@ export default class secondmap extends Phaser.Scene
             this.faune.body.offset.x = 8
 
         }
-        else if (this.cursors.up?.isDown) {
+        else if (this.cursors.up?.isDown || keyW.isDown) {
             this.faune.anims.play('faune-run-up', true)
             this.faune.setVelocity(0, -speed)
         }
 
-        else if (this.cursors.down?.isDown) {
+        else if (this.cursors.down?.isDown || keyS.isDown) {
             
             this.faune.anims.play('faune-run-down', true)
             this.faune.setVelocity(0, speed)
@@ -101,6 +111,5 @@ export default class secondmap extends Phaser.Scene
             this.faune.anims.play(parts.join('-'))
             this.faune.setVelocity(0, 0)
         }
-
     }
 }

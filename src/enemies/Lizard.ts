@@ -26,7 +26,6 @@ export default class Lizard extends Phaser.Physics.Arcade.Sprite
         super(scene, x, y, texture, frame)
 
         this.anims.play('lizard-idle')
-
         scene.physics.world.on(Phaser.Physics.Arcade.Events.TILE_COLLIDE, this.handleTileCollisions, this)
 
         this.moveEvent = scene.time.addEvent({

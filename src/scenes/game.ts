@@ -4,6 +4,11 @@ import { createCharacterAnims } from '../anims/CharacterAnims'
 import Lizard from '../enemies/Lizard'
 import secondmap from './secondmap'
 
+let keyA;
+let keyS;
+let keyD;
+let keyW;
+
 export default class Game extends Phaser.Scene
 {
     private cursors!: Phaser.Types.Input.Keyboard.CursorKeys
@@ -47,7 +52,11 @@ export default class Game extends Phaser.Scene
        const Tree3 = map.createLayer('Tree3', tileset)
        const Tree4 = map.createLayer('Tree4', tileset)
        const Next1 = map.createLayer('Next', tileset)
-       
+
+       keyA = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A);
+       keyS = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S);
+       keyD = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D);
+       keyW = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W);
 
        House.setCollisionByProperty({ collides: true})
        Housedecor.setCollisionByProperty({ collides: true })
@@ -66,7 +75,7 @@ export default class Game extends Phaser.Scene
 
 
     //    const debugGraphics = this.add.graphics().setAlpha(0.7)
-    //    Next1.renderDebug(debugGraphics, {
+    //    water.renderDebug(debugGraphics, {
     //     tileColor: null,
     //     collidingTileColor: new Phaser.Display.Color(243, 234, 48, 255),
     //     faceColor: new Phaser.Display.Color(40, 39, 37, 255)
@@ -145,7 +154,7 @@ export default class Game extends Phaser.Scene
 
     update(t: number, dt: number){       
 
-        console.log(this.faune.x, this.faune.y)
+        // console.log(this.faune.x, this.faune.y)
         if (this.faune.y > 450 && this.faune.x < 90){
             this.scene.stop()
             this.scene.start('secondmap')
@@ -156,14 +165,14 @@ export default class Game extends Phaser.Scene
             return
         }
         const speed = 100;
-        if (this.cursors.left?.isDown)
+        if (this.cursors.left?.isDown || keyA.isDown)
         {
             this.faune.anims.play('faune-run-side', true)
             this.faune.setVelocity(-speed, 0)
             this.faune.scaleX = -1
             this.faune.body.offset.x = 24
         }
-        else if (this.cursors.right?.isDown)
+        else if (this.cursors.right?.isDown || keyD.isDown)
         {
             this.faune.anims.play('faune-run-side', true)
             this.faune.setVelocity(speed, 0)
@@ -171,12 +180,12 @@ export default class Game extends Phaser.Scene
             this.faune.body.offset.x = 8
 
         }
-        else if (this.cursors.up?.isDown) {
+        else if (this.cursors.up?.isDown || keyW.isDown) {
             this.faune.anims.play('faune-run-up', true)
             this.faune.setVelocity(0, -speed)
         }
 
-        else if (this.cursors.down?.isDown) {
+        else if (this.cursors.down?.isDown || keyS.isDown) {
             
             this.faune.anims.play('faune-run-down', true)
             this.faune.setVelocity(0, speed)
