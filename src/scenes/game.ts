@@ -13,6 +13,8 @@ export default class Game extends Phaser.Scene
 {
     private cursors!: Phaser.Types.Input.Keyboard.CursorKeys
     private faune!: Phaser.Physics.Arcade.Sprite
+
+    private hit = 0
 	constructor()
 	{
 		super('game')
@@ -124,7 +126,7 @@ export default class Game extends Phaser.Scene
     this.physics.add.collider(lizards, Tree3)
     this.physics.add.collider(lizards, Tree4)
     this.physics.add.collider(lizards, Houseontop)
-    this.physics.add.collider(lizards, this.faune)
+    this.physics.add.collider(lizards, this.faune, this.handlePlayerLizardCollision, undefined, this)
 
     // const lizard = this.physics.add.sprite(500, 300, 'lizard', 'lizard_m_idle_anim_f0.png')
     // lizard.anims.play('lizard-run')
@@ -150,8 +152,31 @@ export default class Game extends Phaser.Scene
     }
 
 
+    private handlePlayerLizardCollision(obj1: Phaser.GameObjects.GameObject, obj2: Phaser.GameObjects.GameObject){
+        
+        const lizard = obj2 as Lizard
+
+        const dx = this.faune.x - lizard.x
+        const dy = this.faune.y - lizard.y
+
+        const dir = new Phaser.Math.Vector2(dx, dy).normalize().scale(200)
+
+        this.faune.setVelocity(dir.x, dir.y)
+
+        this.hit = 1
+    }
 
     update(t: number, dt: number){       
+
+
+        if (this.hit > 0){
+            ++this.hit
+            if (this.hit > 10)
+            {
+                this.hit = 0
+            }
+            return
+        }
 
         // console.log(this.faune.x, this.faune.y)
         if (this.faune.y > 450 && this.faune.x < 90){
@@ -189,7 +214,7 @@ export default class Game extends Phaser.Scene
             this.faune.anims.play('faune-run-down', true)
             this.faune.setVelocity(0, speed)
         }
-        else
+        else    
         {
             const parts = this.faune.anims.currentAnim.key.split('-')
             parts[1] = 'idle'
