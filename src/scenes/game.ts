@@ -143,7 +143,6 @@ export default class Game extends Phaser.Scene
     // }
       
     // this.physics.world.collide(this.faune, Next1, ()=>{
-    //     console.log("cool")
     //     this.scene.stop(),
     //     this.scene.start('secondmap');
     //     });
