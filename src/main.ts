@@ -3,6 +3,7 @@ import Phaser, { Scale } from 'phaser'
 import Preloader from './scenes/Preloader'
 import Game from './scenes/game'
 import secondmap from './scenes/secondmap'
+import GameUI from './scenes/GameUI'
 
 const config: Phaser.Types.Core.GameConfig = {
 	type: Phaser.AUTO,
@@ -12,10 +13,10 @@ const config: Phaser.Types.Core.GameConfig = {
 		default: 'arcade',
 		arcade: {
 			gravity: { y: 0 },
-			debug: true
+			// debug: true
 		}
 	},
-	scene: [Preloader, Game, secondmap],
+	scene: [Preloader, Game, secondmap, GameUI],
 	scale: {
 		zoom: 2
 	}

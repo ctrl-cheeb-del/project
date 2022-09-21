@@ -5,6 +5,7 @@ import Lizard from '../enemies/Lizard'
 import secondmap from './secondmap'
 import '../characters/Faune'
 import Faune from '../characters/Faune'
+import { sceneEvents } from '~/events/EventCenter'
 
 let keyA;
 let keyS;
@@ -15,6 +16,7 @@ export default class Game extends Phaser.Scene
 {
     private cursors!: Phaser.Types.Input.Keyboard.CursorKeys
     private faune!: Faune
+    private playerLizardCollider?: Phaser.Physics.Arcade.Collider
 
 	constructor()
 	{
@@ -30,6 +32,7 @@ export default class Game extends Phaser.Scene
     create()
     {
 
+        this.scene.run('game-ui')
         // this.scene.start('secondmap')
 
         createCharacterAnims(this.anims)
@@ -124,7 +127,7 @@ export default class Game extends Phaser.Scene
     this.physics.add.collider(lizards, Tree3)
     this.physics.add.collider(lizards, Tree4)
     this.physics.add.collider(lizards, Houseontop)
-    this.physics.add.collider(lizards, this.faune, this.handlePlayerLizardCollision, undefined, this)
+    this.playerLizardCollider = this.physics.add.collider(lizards, this.faune, this.handlePlayerLizardCollision, undefined, this)
 
     // const lizard = this.physics.add.sprite(500, 300, 'lizard', 'lizard_m_idle_anim_f0.png')
     // lizard.anims.play('lizard-run')
@@ -158,6 +161,12 @@ export default class Game extends Phaser.Scene
 
 		const dir = new Phaser.Math.Vector2(dx, dy).normalize().scale(200)
         this.faune.handleDamage(dir)
+
+        sceneEvents.emit('player-health-changed', this.faune.health)
+
+        if (this.faune.health <= 0){
+            this.playerLizardCollider?.destroy()
+        }
     }
 
     update(t: number, dt: number){                
