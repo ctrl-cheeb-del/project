@@ -17,6 +17,8 @@ export default class Game extends Phaser.Scene
     private cursors!: Phaser.Types.Input.Keyboard.CursorKeys
     private faune!: Faune
     private playerLizardCollider?: Phaser.Physics.Arcade.Collider
+    private knives!: Phaser.Physics.Arcade.Group
+    private lizards!: Phaser.Physics.Arcade.Group
 
 	constructor()
 	{
@@ -87,8 +89,13 @@ export default class Game extends Phaser.Scene
     //     faceColor: new Phaser.Display.Color(40, 39, 37, 255)
     //    })
 
+    this.knives = this.physics.add.group({
+        classType: Phaser.Physics.Arcade.Image,
+        maxSize: 3
+    })
 
     this.faune = this.add.faune(480, 235, 'faune')
+    this.faune.setKnives(this.knives)
     this.physics.add.collider(this.faune, Island1)
     this.physics.add.collider(this.faune, Rocks)
     this.physics.add.collider(this.faune, Island2)
@@ -102,12 +109,11 @@ export default class Game extends Phaser.Scene
     this.physics.add.collider(this.faune, Houseontop)
     this.physics.add.collider(this.faune, Next1)
 
-
     this.cameras.main.startFollow(this.faune, true,)
     this.cameras.main.setBounds(-436, -200.5, 1833, 887, true)
     // this.cameras.main.centerOn(innerWidth, innerHeight)
 
-    const lizards = this.physics.add.group({
+    this.lizards = this.physics.add.group({
         classType: Lizard,
         createCallback: (go) => {
             const lizGo = go as Lizard
@@ -115,43 +121,39 @@ export default class Game extends Phaser.Scene
         }
     })
 
-    lizards.get(500, 300, 'lizard')
-    this.physics.add.collider(lizards, Island1)
-    this.physics.add.collider(lizards, Rocks)
-    this.physics.add.collider(lizards, Island2)
-    this.physics.add.collider(lizards, water)
-    this.physics.add.collider(lizards, House)
-    this.physics.add.collider(lizards, Housedecor)
-    this.physics.add.collider(lizards, Tree1)
-    this.physics.add.collider(lizards, Tree2)
-    this.physics.add.collider(lizards, Tree3)
-    this.physics.add.collider(lizards, Tree4)
-    this.physics.add.collider(lizards, Houseontop)
-    this.playerLizardCollider = this.physics.add.collider(lizards, this.faune, this.handlePlayerLizardCollision, undefined, this)
-
-    // const lizard = this.physics.add.sprite(500, 300, 'lizard', 'lizard_m_idle_anim_f0.png')
-    // lizard.anims.play('lizard-run')
-
-    // this.physics.add.overlap(this.faune, Next1) {
-    //     console.log("cool");
-    //     sleep(20000)
-    //     this.scene.stop();
-    //     this.scene.start('secondmap');
-    // }
-
-    // if(this.physics.collide(this.faune, Next1)){
-    //     console.log("cool")
-    //     this.scene.stop();
-    //     this.scene.start('secondmap');
-    // }
-      
-    // this.physics.world.collide(this.faune, Next1, ()=>{
-    //     this.scene.stop(),
-    //     this.scene.start('secondmap');
-    //     });
+    this.lizards.get(500, 300, 'lizard')
+    this.lizards.get(800, 300, 'lizard')
+    this.physics.add.collider(this.lizards, Island1)
+    this.physics.add.collider(this.lizards, Rocks)
+    this.physics.add.collider(this.lizards, Island2)
+    this.physics.add.collider(this.lizards, water)
+    this.physics.add.collider(this.lizards, House)
+    this.physics.add.collider(this.lizards, Housedecor)
+    this.physics.add.collider(this.lizards, Tree1)
+    this.physics.add.collider(this.lizards, Tree2)
+    this.physics.add.collider(this.lizards, Tree3)
+    this.physics.add.collider(this.lizards, Tree4)
+    this.physics.add.collider(this.lizards, Houseontop)
+    this.physics.add.collider(this.knives, this.lizards, this.handleKnifeLizardCollision, undefined, this)
+    this.physics.add.collider(this.knives, Island1, this.handleKnifeWallCollision, undefined, this)
+    this.physics.add.collider(this.knives, Rocks, this.handleKnifeWallCollision, undefined, this)
+    this.physics.add.collider(this.knives, House, this.handleKnifeWallCollision, undefined, this)
+    this.playerLizardCollider = this.physics.add.collider(this.lizards, this.faune, this.handlePlayerLizardCollision, undefined, this)
     
     }
 
+    private handleKnifeWallCollision(obj1: Phaser.GameObjects.GameObject, obj2: Phaser.GameObjects.GameObject)
+	{
+		this.knives.killAndHide(obj1)
+	}
+
+	private handleKnifeLizardCollision(obj1: Phaser.GameObjects.GameObject, obj2: Phaser.GameObjects.GameObject)
+	{
+		this.knives.killAndHide(obj1)
+		this.lizards.killAndHide(obj2)
+        // this.playerLizardCollider?.destroy()
+
+	}
 
     private handlePlayerLizardCollision(obj1: Phaser.GameObjects.GameObject, obj2: Phaser.GameObjects.GameObject){
         

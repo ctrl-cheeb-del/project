@@ -1,21 +1,30 @@
-import Phaser from 'phaser'
+import Phaser, { Scene } from 'phaser'
 import { createLizardAnims } from '../anims/EnemyAnims'
 import { createCharacterAnims } from '../anims/CharacterAnims'
 import Lizard from '../enemies/Lizard'
+import secondmap from './secondmap'
+import '../characters/Faune'
+import Faune from '../characters/Faune'
+import { sceneEvents } from '~/events/EventCenter'
 
 let keyA;
 let keyS;
 let keyD;
 let keyW;
 
-export default class secondmap extends Phaser.Scene
+export default class Game extends Phaser.Scene
 {
     private cursors!: Phaser.Types.Input.Keyboard.CursorKeys
-    private faune!: Phaser.Physics.Arcade.Sprite
+    private faune!: Faune
+    private playerLizardCollider?: Phaser.Physics.Arcade.Collider
+    private knives!: Phaser.Physics.Arcade.Group
+    private lizards!: Phaser.Physics.Arcade.Group
+
 	constructor()
 	{
 		super('secondmap')
 	}
+    
 
 	preload()
     {
@@ -24,13 +33,24 @@ export default class secondmap extends Phaser.Scene
 
     create()
     {
+
+        this.scene.run('game-ui')
+        // this.scene.start('secondmap')
+
         createCharacterAnims(this.anims)
         createLizardAnims(this.anims)
 
        const map = this.make.tilemap({ key: 'map2' })
        const tileset = map.addTilesetImage('Serene_Village_16x16', 'tiles2')
 
+       
        const Island1 = map.createLayer('Island1', tileset)
+
+       keyA = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A);
+       keyS = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S);
+       keyD = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D);
+       keyW = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W);
+
        Island1.setCollisionByProperty({ collides: true })
 
     //    const debugGraphics = this.add.graphics().setAlpha(0.7)
@@ -40,22 +60,21 @@ export default class secondmap extends Phaser.Scene
     //     faceColor: new Phaser.Display.Color(40, 39, 37, 255)
     //    })
 
-    this.faune = this.physics.add.sprite(80, 40, 'faune', 'walk-down-3.png')
-    this.faune.body.setSize(this.faune.width * 0.5, this.faune.height * 0.7)
+    this.knives = this.physics.add.group({
+        classType: Phaser.Physics.Arcade.Image,
+        maxSize: 3
+    })
 
-    this.faune.anims.play('faune-idle-down')
+    this.faune = this.add.faune(480, 235, 'faune')
+    this.faune.setKnives(this.knives)
     this.physics.add.collider(this.faune, Island1)
 
-    keyA = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A);
-    keyS = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S);
-    keyD = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D);
-    keyW = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W);
 
     this.cameras.main.startFollow(this.faune, true,)
     this.cameras.main.setBounds(-436, -200.5, 1833, 887, true)
     // this.cameras.main.centerOn(innerWidth, innerHeight)
 
-    const lizards = this.physics.add.group({
+    this.lizards = this.physics.add.group({
         classType: Lizard,
         createCallback: (go) => {
             const lizGo = go as Lizard
@@ -63,53 +82,56 @@ export default class secondmap extends Phaser.Scene
         }
     })
 
-    lizards.get(500, 300, 'lizard')
-    this.physics.add.collider(lizards, Island1)
-    this.physics.add.collider(lizards, this.faune)
-
-
-    // const lizard = this.physics.add.sprite(500, 300, 'lizard', 'lizard_m_idle_anim_f0.png')
-    // lizard.anims.play('lizard-run')
-
+    this.lizards.get(500, 300, 'lizard')
+    this.lizards.get(800, 300, 'lizard')
+    this.physics.add.collider(this.lizards, Island1)
+    this.physics.add.collider(this.knives, this.lizards, this.handleKnifeLizardCollision, undefined, this)
+    this.physics.add.collider(this.knives, Island1, this.handleKnifeWallCollision, undefined, this)
+    this.playerLizardCollider = this.physics.add.collider(this.lizards, this.faune, this.handlePlayerLizardCollision, undefined, this)
+    
     }
 
-    update(t: number, dt: number){
-        if (!this.cursors || !this.faune)
-        {
-            return
-        }
-        const speed = 100;
-        if (this.cursors.left?.isDown || keyA.isDown)
-        {
-            this.faune.anims.play('faune-run-side', true)
-            this.faune.setVelocity(-speed, 0)
-            this.faune.scaleX = -1
-            this.faune.body.offset.x = 24
-        }
-        else if (this.cursors.right?.isDown || keyD.isDown)
-        {
-            this.faune.anims.play('faune-run-side', true)
-            this.faune.setVelocity(speed, 0)
-            this.faune.scaleX = 1
-            this.faune.body.offset.x = 8
+    private handleKnifeWallCollision(obj1: Phaser.GameObjects.GameObject, obj2: Phaser.GameObjects.GameObject)
+	{
+		this.knives.killAndHide(obj1)
+	}
 
-        }
-        else if (this.cursors.up?.isDown || keyW.isDown) {
-            this.faune.anims.play('faune-run-up', true)
-            this.faune.setVelocity(0, -speed)
-        }
+	private handleKnifeLizardCollision(obj1: Phaser.GameObjects.GameObject, obj2: Phaser.GameObjects.GameObject)
+	{
+		this.knives.killAndHide(obj1)
+		this.lizards.killAndHide(obj2)
+        // this.playerLizardCollider?.destroy()
 
-        else if (this.cursors.down?.isDown || keyS.isDown) {
-            
-            this.faune.anims.play('faune-run-down', true)
-            this.faune.setVelocity(0, speed)
-        }
-        else
-        {
-            const parts = this.faune.anims.currentAnim.key.split('-')
-            parts[1] = 'idle'
-            this.faune.anims.play(parts.join('-'))
-            this.faune.setVelocity(0, 0)
+	}
+
+    private handlePlayerLizardCollision(obj1: Phaser.GameObjects.GameObject, obj2: Phaser.GameObjects.GameObject){
+        
+        const lizard = obj2 as Lizard
+        const dx = this.faune.x - lizard.x
+        const dy = this.faune.y - lizard.y
+
+		const dir = new Phaser.Math.Vector2(dx, dy).normalize().scale(200)
+        this.faune.handleDamage(dir)
+
+        sceneEvents.emit('player-health-changed', this.faune.health)
+
+        if (this.faune.health <= 0){
+            this.playerLizardCollider?.destroy()
         }
     }
+
+    update(t: number, dt: number){                
+
+        // console.log(this.faune.x, this.faune.y)
+        if (this.faune.y > 450 && this.faune.x < 90){
+            this.scene.stop()
+            this.scene.start('secondmap')
+        }
+
+        if (this.faune)
+        {
+            this.faune.update(this.cursors)
+        }
+    }
+
 }
