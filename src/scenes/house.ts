@@ -45,6 +45,11 @@ export default class Game extends Phaser.Scene
 
        const Floor = map.createLayer('Floor', tileset)
        const Walls = map.createLayer('Walls', tileset)
+       const Carpet = map.createLayer('Carpet', tileset)
+       const Decor = map.createLayer('Decor', tileset)
+       const Decor2 = map.createLayer('Decor2', tileset)
+       const OpenDoor = map.createLayer('Opendoor', tileset)
+
 
 
        keyA = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A);
@@ -55,7 +60,7 @@ export default class Game extends Phaser.Scene
        Walls.setCollisionByProperty({ collides: true })
 
     //    const debugGraphics = this.add.graphics().setAlpha(0.7)
-    //    water.renderDebug(debugGraphics, {
+    //    Walls.renderDebug(debugGraphics, {
     //     tileColor: null,
     //     collidingTileColor: new Phaser.Display.Color(243, 234, 48, 255),
     //     faceColor: new Phaser.Display.Color(40, 39, 37, 255)
@@ -66,13 +71,14 @@ export default class Game extends Phaser.Scene
         maxSize: 3
     })
 
-    this.faune = this.add.faune(480, 235, 'faune')
+    this.faune = this.add.faune(632, 400, 'faune')
+    this.faune.anims.play("faune-idle-up")
     this.faune.setKnives(this.knives)
     this.physics.add.collider(this.faune, Walls)
 
 
     this.cameras.main.startFollow(this.faune, true,)
-    this.cameras.main.setBounds(-436, -200.5, 1833, 887, true)
+    this.cameras.main.setBounds(-436, -218.5, 1833, 887, true)
     // this.cameras.main.centerOn(innerWidth, innerHeight)
 
     this.lizards = this.physics.add.group({
@@ -83,8 +89,8 @@ export default class Game extends Phaser.Scene
         }
     })
 
-    this.lizards.get(500, 300, 'lizard')
-    this.lizards.get(800, 300, 'lizard')
+    // this.lizards.get(500, 300, 'lizard')
+    // this.lizards.get(800, 300, 'lizard')
     this.physics.add.collider(this.lizards, Walls)
     this.physics.add.collider(this.knives, this.lizards, this.handleKnifeLizardCollision, undefined, this)
     this.physics.add.collider(this.knives, Walls, this.handleKnifeWallCollision, undefined, this)
@@ -124,9 +130,9 @@ export default class Game extends Phaser.Scene
     update(t: number, dt: number){                
 
         // console.log(this.faune.x, this.faune.y)
-        if (this.faune.y > 450 && this.faune.x < 90){
+        if (this.faune.y > 418 && this.faune.x === 632){
             this.scene.stop()
-            this.scene.start('secondmap')
+            this.scene.start('game')
         }
 
         if (this.faune)

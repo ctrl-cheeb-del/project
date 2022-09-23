@@ -94,7 +94,7 @@ export default class Game extends Phaser.Scene
         maxSize: 3
     })
 
-    this.faune = this.add.faune(480, 235, 'faune')
+    this.faune = this.add.faune(70, 300, 'faune')
     this.faune.setKnives(this.knives)
     this.physics.add.collider(this.faune, Island1)
     this.physics.add.collider(this.faune, Rocks)
