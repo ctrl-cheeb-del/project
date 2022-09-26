@@ -7,24 +7,38 @@ import '../characters/Faune'
 import Faune from '../characters/Faune'
 import { sceneEvents } from '~/events/EventCenter'
 
+function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+let times = 0;
 let keyA;
 let keyS;
 let keyD;
 let keyW;
+let keyEnter;
+
 
 export default class Game extends Phaser.Scene
 {
+
     private cursors!: Phaser.Types.Input.Keyboard.CursorKeys
     private faune!: Faune
     private playerLizardCollider?: Phaser.Physics.Arcade.Collider
     private knives!: Phaser.Physics.Arcade.Group
     private lizards!: Phaser.Physics.Arcade.Group
+    private _kills = 0
+
+    get kills()
+	{
+		return this._kills
+	}
+
 
 	constructor()
 	{
 		super('house')
 	}
-    
 
 	preload()
     {
@@ -50,14 +64,18 @@ export default class Game extends Phaser.Scene
        const Decor2 = map.createLayer('Decor2', tileset)
        const OpenDoor = map.createLayer('Opendoor', tileset)
 
-
-
        keyA = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A);
        keyS = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S);
        keyD = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D);
        keyW = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W);
+       keyEnter = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ENTER);
+
+
 
        Walls.setCollisionByProperty({ collides: true })
+       Decor.setCollisionByProperty({ collides: true })
+       Decor2.setCollisionByProperty({ collides: true })
+
 
     //    const debugGraphics = this.add.graphics().setAlpha(0.7)
     //    Walls.renderDebug(debugGraphics, {
@@ -74,7 +92,12 @@ export default class Game extends Phaser.Scene
     this.faune = this.add.faune(632, 400, 'faune')
     this.faune.anims.play("faune-idle-up")
     this.faune.setKnives(this.knives)
+    const adam = this.add.image(664, 37, 'adam')
     this.physics.add.collider(this.faune, Walls)
+    this.physics.add.collider(this.faune, Decor)
+    this.physics.add.collider(this.faune, Decor2)
+
+
 
 
     this.cameras.main.startFollow(this.faune, true,)
@@ -97,6 +120,11 @@ export default class Game extends Phaser.Scene
     this.playerLizardCollider = this.physics.add.collider(this.lizards, this.faune, this.handlePlayerLizardCollision, undefined, this)
     
     }
+
+    // private handleKills(kills: number){
+    //     kills += 1
+    //     console.log(kills)
+    // }
 
     private handleKnifeWallCollision(obj1: Phaser.GameObjects.GameObject, obj2: Phaser.GameObjects.GameObject)
 	{
@@ -127,12 +155,25 @@ export default class Game extends Phaser.Scene
         }
     }
 
-    update(t: number, dt: number){                
 
+    update(t: number, dt: number){                
+        console.log(this._kills)
         // console.log(this.faune.x, this.faune.y)
         if (this.faune.y > 418 && this.faune.x === 632){
             this.scene.stop()
             this.scene.start('game')
+            times += 1;
+        }
+
+
+        if (this.faune.y < 60 && this.faune.x === 664 && keyEnter.isDown && times > 0){
+            this.add.text(678, 0, 'WWWWW', { fontFamily: 'Georgia, "Goudy Bookletter 1911", Times, serif' });
+
+        }
+        // console.log(this.faune.x, this.faune.y)
+        if (this.faune.y < 60 && this.faune.x === 664 && keyEnter.isDown && times === 0){
+            this.add.text(678, 0, 'Kill 3 lizards then come back to me', { fontFamily: 'Georgia, "Goudy Bookletter 1911", Times, serif' });
+           
         }
 
         if (this.faune)

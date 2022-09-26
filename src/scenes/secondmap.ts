@@ -65,7 +65,7 @@ export default class Game extends Phaser.Scene
         maxSize: 3
     })
 
-    this.faune = this.add.faune(480, 235, 'faune')
+    this.faune = this.add.faune(90, 20, 'faune')
     this.faune.setKnives(this.knives)
     this.physics.add.collider(this.faune, Island1)
 
@@ -123,9 +123,9 @@ export default class Game extends Phaser.Scene
     update(t: number, dt: number){                
 
         // console.log(this.faune.x, this.faune.y)
-        if (this.faune.y > 450 && this.faune.x < 90){
+        if (this.faune.y < 20 && this.faune.x > 85 && this.faune.x < 100){
             this.scene.stop()
-            this.scene.start('secondmap')
+            this.scene.start('game')
         }
 
         if (this.faune)

@@ -7,6 +7,10 @@ import '../characters/Faune'
 import Faune from '../characters/Faune'
 import { sceneEvents } from '~/events/EventCenter'
 
+function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
+
 let keyA;
 let keyS;
 let keyD;
@@ -24,7 +28,6 @@ export default class Game extends Phaser.Scene
 	{
 		super('game')
 	}
-    
 
 	preload()
     {
@@ -153,6 +156,10 @@ export default class Game extends Phaser.Scene
 		this.knives.killAndHide(obj1)
 		this.lizards.killAndHide(obj2)
         // this.playerLizardCollider?.destroy()
+        // kills += 1;
+        sleep(2000)
+        sceneEvents.emit('playerKills', this.faune.kills)
+        // sceneEvents.emit('killAdded', kills)
 
 	}
 
@@ -174,6 +181,7 @@ export default class Game extends Phaser.Scene
 
     update(t: number, dt: number){                
 
+        // console.log(this.kills)
         // console.log(this.faune.x, this.faune.y)
         if (this.faune.y > 450 && this.faune.x < 90){
             this.scene.stop()

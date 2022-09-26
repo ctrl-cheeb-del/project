@@ -29,6 +29,17 @@ export default class GameUI extends Phaser.Scene
         this.events.on(Phaser.Scenes.Events.SHUTDOWN, () =>{
             sceneEvents.off('player-health-changed', this.handlePlayerHealthChanged, this)
         })
+
+        sceneEvents.on('playerKills', this.handleKills, this)
+        this.events.on(Phaser.Scenes.Events.SHUTDOWN, () =>{
+            sceneEvents.off('playerKills', this.handleKills, this)
+        })
+    }
+
+    private handleKills(kills: number){
+        kills = kills += 1
+        console.log(kills)
+        return kills
     }
 
     private handlePlayerHealthChanged(health: number){

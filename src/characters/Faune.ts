@@ -27,11 +27,17 @@ export default class Faune extends Phaser.Physics.Arcade.Sprite
     private healthState = HealthState.IDLE
     private damageTime = 0
     private _health = 3
+	private _kills = 0
 	private knives?: Phaser.Physics.Arcade.Group 
 
     get health()
 	{
 		return this._health
+	}
+
+	get kills()
+	{
+		return this._kills
 	}
 
     constructor(scene: Phaser.Scene, x: number, y: number, texture: string, frame?: string | number)
