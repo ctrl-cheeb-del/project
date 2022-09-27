@@ -14,9 +14,10 @@ export default class Game extends Phaser.Scene
 
     create()
     {
-    this.add.image(-220, -155, 'background').setOrigin(0)
-    this.add.image(innerWidth / 2.8, innerHeight / 4.2, 'logo').setOrigin(0)
-    const playbutton = this.add.image(innerWidth / 2.2, innerHeight / 2, 'playreal').setOrigin(0)
+    const background = this.add.image(130, 0, 'backgroundtest').setOrigin(0)
+    background.setScale(2.75)
+    this.add.image(innerWidth / 2.8, innerHeight / 6.9, 'logo').setOrigin(0)
+    const playbutton = this.add.image(innerWidth / 2.2, innerHeight / 2.8, 'playreal').setOrigin(0)
     this.add.image(innerWidth / 2.2, innerHeight / 1.2, 'settings').setOrigin(0)
 
     this.cameras.main.zoom = 0.59;
