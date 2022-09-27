@@ -21,10 +21,16 @@ export default class Preloader extends Phaser.Scene
         this.load.atlas('faune', 'character/faune.png', 'character/faune.json')
         this.load.atlas('lizard', 'enemies/lizard.png', 'enemies/lizard.json')
         this.load.image('adam', 'character/adam.png')
+        this.load.image('background', 'ui/backgroundMenu.jpg')
+        this.load.image('logo', 'ui/logoreal.png')
+        this.load.image('settings', 'ui/settingsreal.png')
+        this.load.image('playreal', 'ui/playreal.png')
+
+
     } 
 
     create()
     {
-        this.scene.start('game')
+        this.scene.start('mainMenu')
     }
 }

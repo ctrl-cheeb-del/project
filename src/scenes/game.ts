@@ -5,7 +5,7 @@ import Lizard from '../enemies/Lizard'
 import secondmap from './secondmap'
 import '../characters/Faune'
 import Faune from '../characters/Faune'
-import { sceneEvents } from '~/events/EventCenter'
+import { sceneEvents } from '../events/EventCenter'
 
 function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
@@ -113,7 +113,7 @@ export default class Game extends Phaser.Scene
     this.physics.add.collider(this.faune, Next1)
 
     this.cameras.main.startFollow(this.faune, true,)
-    this.cameras.main.setBounds(-436, -200.5, 1833, 887, true)
+    this.cameras.main.setBounds(-436, -210.5, 1800, 895, true)
     // this.cameras.main.centerOn(innerWidth, innerHeight)
 
     this.lizards = this.physics.add.group({
@@ -126,6 +126,7 @@ export default class Game extends Phaser.Scene
 
     this.lizards.get(500, 300, 'lizard')
     this.lizards.get(600, 300, 'lizard')
+    this.lizards.get(600, 150, 'lizard')
     // this.lizards.get(100, 300, 'lizard')
     this.physics.add.collider(this.lizards, Island1)
     this.physics.add.collider(this.lizards, Rocks)
