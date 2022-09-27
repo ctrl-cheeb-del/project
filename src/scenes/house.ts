@@ -157,8 +157,8 @@ export default class Game extends Phaser.Scene
 
 
     update(t: number, dt: number){                
-        console.log(this._kills)
-        // console.log(this.faune.x, this.faune.y)
+        // console.log(this._kills)
+        console.log(this.faune.x, this.faune.y)
         if (this.faune.y > 418 && this.faune.x === 632){
             this.scene.stop()
             this.scene.start('game')
@@ -166,14 +166,22 @@ export default class Game extends Phaser.Scene
         }
 
 
-        if (this.faune.y < 60 && this.faune.x === 664 && keyEnter.isDown && times > 0){
-            this.add.text(678, 0, 'WWWWW', { fontFamily: 'Georgia, "Goudy Bookletter 1911", Times, serif' });
-
+        if (this.faune.y < 60 && this.faune.x > 650 && this.faune.x < 670 && keyEnter.isDown && times > 0){
+            const adamWin = this.add.text(678, 0, 'WWWWW', { fontFamily: 'Georgia, "Goudy Bookletter 1911", Times, serif' });
+            async function destroyText(){
+                await sleep(2000);
+                adamWin.destroy()
+            }
+            destroyText()
         }
         // console.log(this.faune.x, this.faune.y)
-        if (this.faune.y < 60 && this.faune.x === 664 && keyEnter.isDown && times === 0){
-            this.add.text(678, 0, 'Kill 3 lizards then come back to me', { fontFamily: 'Georgia, "Goudy Bookletter 1911", Times, serif' });
-           
+        if (this.faune.y < 60 && this.faune.x > 650 && this.faune.x < 670 && keyEnter.isDown && times === 0){
+            const adamtext = this.add.text(678, 0, 'Kill a lizard, then come back to talk to me', { fontFamily: 'Georgia, "Goudy Bookletter 1911", Times, serif' });
+            async function destroyText(){
+                await sleep(2500);
+                adamtext.destroy()
+            }
+            destroyText()
         }
 
         if (this.faune)

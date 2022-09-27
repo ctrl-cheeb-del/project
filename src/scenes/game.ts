@@ -7,14 +7,15 @@ import '../characters/Faune'
 import Faune from '../characters/Faune'
 import { sceneEvents } from '../events/EventCenter'
 
-function sleep(ms) {
-    return new Promise(resolve => setTimeout(resolve, ms));
-}
-
 let keyA;
 let keyS;
 let keyD;
 let keyW;
+let keyEnter;
+
+function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+ }
 
 export default class Game extends Phaser.Scene
 {
@@ -54,20 +55,28 @@ export default class Game extends Phaser.Scene
        const Rocks = map.createLayer('Rocks', tileset)
        const Decor = map.createLayer('Decor', tileset)
        const Bushes = map.createLayer('Bushes', tileset)
+       const Tree7 = map.createLayer('Tree7', tileset)
+       const Tree6 = map.createLayer('Tree6', tileset)
+       const Tree5 = map.createLayer('Tree5', tileset)
+       const Tree4 = map.createLayer('Tree4', tileset)
+       const Tree3 = map.createLayer('Tree3', tileset)
+       const Tree2 = map.createLayer('Tree2', tileset)
+       const Tree1 = map.createLayer('Tree1', tileset)
+       const Tree0 = map.createLayer('Tree0', tileset)
        const House_under = map.createLayer('House under', tileset)
        const Housedecor = map.createLayer('House decor',tileset)
        const House = map.createLayer('House', tileset)
        const Houseontop = map.createLayer('House Ontop', tileset)
-       const Tree1 = map.createLayer('Tree1', tileset)
-       const Tree2 = map.createLayer('Tree2', tileset)
-       const Tree3 = map.createLayer('Tree3', tileset)
-       const Tree4 = map.createLayer('Tree4', tileset)
+
+
+
        const Next1 = map.createLayer('Next', tileset)
 
        keyA = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A);
        keyS = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S);
        keyD = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D);
        keyW = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W);
+       keyEnter = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ENTER);
 
        House.setCollisionByProperty({ collides: true})
        Housedecor.setCollisionByProperty({ collides: true })
@@ -82,6 +91,9 @@ export default class Game extends Phaser.Scene
        Tree2.setCollisionByProperty({ collides: true })
        Tree3.setCollisionByProperty({ collides: true })
        Tree4.setCollisionByProperty({ collides: true })
+       Tree5.setCollisionByProperty({ collides: true })
+       Tree6.setCollisionByProperty({ collides: true })
+       Tree7.setCollisionByProperty({ collides: true })
        Next1.setCollisionByProperty({ collides: true })
 
 
@@ -109,7 +121,11 @@ export default class Game extends Phaser.Scene
     this.physics.add.collider(this.faune, Tree2)
     this.physics.add.collider(this.faune, Tree3)
     this.physics.add.collider(this.faune, Tree4)
+    this.physics.add.collider(this.faune, Tree5)
+    this.physics.add.collider(this.faune, Tree6)
+    this.physics.add.collider(this.faune, Tree7)
     this.physics.add.collider(this.faune, Houseontop)
+    this.physics.add.collider(this.faune, Bushes)
     this.physics.add.collider(this.faune, Next1)
 
     this.cameras.main.startFollow(this.faune, true,)
@@ -132,12 +148,16 @@ export default class Game extends Phaser.Scene
     this.physics.add.collider(this.lizards, Rocks)
     this.physics.add.collider(this.lizards, Island2)
     this.physics.add.collider(this.lizards, water)
+    this.physics.add.collider(this.lizards, Bushes)
     this.physics.add.collider(this.lizards, House)
     this.physics.add.collider(this.lizards, Housedecor)
     this.physics.add.collider(this.lizards, Tree1)
     this.physics.add.collider(this.lizards, Tree2)
     this.physics.add.collider(this.lizards, Tree3)
     this.physics.add.collider(this.lizards, Tree4)
+    this.physics.add.collider(this.lizards, Tree5)
+    this.physics.add.collider(this.lizards, Tree6)
+    this.physics.add.collider(this.lizards, Tree7)
     this.physics.add.collider(this.lizards, Houseontop)
     this.physics.add.collider(this.knives, this.lizards, this.handleKnifeLizardCollision, undefined, this)
     this.physics.add.collider(this.knives, Island1, this.handleKnifeWallCollision, undefined, this)
@@ -158,7 +178,6 @@ export default class Game extends Phaser.Scene
 		this.lizards.killAndHide(obj2)
         // this.playerLizardCollider?.destroy()
         // kills += 1;
-        sleep(2000)
         sceneEvents.emit('playerKills', this.faune.kills)
         // sceneEvents.emit('killAdded', kills)
 
@@ -193,6 +212,21 @@ export default class Game extends Phaser.Scene
             this.scene.stop()
             this.scene.start('house')
         }
+
+        
+
+        if (this.faune.y > 290 && this.faune.y < 305 && this.faune.x > 130 && this.faune.x < 145 && keyEnter.isDown){
+            const speak: any = this.add.text(160, 290, 'Speak to adam inside', { fontFamily: 'Georgia, "Goudy Bookletter 1911", Times, serif'});
+            async function destroyText(){
+                await sleep(1500);
+                speak.destroy()
+            }
+            destroyText()
+        }
+
+        // function destroyIt(speak: any){
+        //     speak.destroy()
+        // }
 
 
         if (this.faune)
